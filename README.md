@@ -1,2 +1,2 @@
 # IntrotoProgrammingCPP
-Class homeworkd for my c++ programming class
+Class homework for my c++ programming class
