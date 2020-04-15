@@ -1,0 +1,3 @@
+﻿  Debuggingcpp.cpp
+C:\Users\saltz\Documents\IntrotoProgrammingCPP\Debugging_LS\Debugging_LS\Debuggingcpp.cpp(20,17): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  Debugging_LS.vcxproj -> C:\Users\saltz\Documents\IntrotoProgrammingCPP\Debugging_LS\Debug\Debugging_LS.exe
