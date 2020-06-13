@@ -1,20 +1,121 @@
+/*
+Lyndon Saltz
+Title: Final Project
+Due Date: 5/8/2020
+Description: Accepts user input of x,y location then finds the closest available cab to pick them up
+*/
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
 
-int setCoordinates(int xU, int yU, double xCabCoordinates[], double yCabCoordinates[] )
+const int MAX = 20;	//Maximum array index amount
+int getX( );	//gets user's x-courdinate
+int getY( );	//gets user's y-coordinate
+void initializeArrays( double xArray[MAX], double yArray[MAX] );	//initializes arrays of randomly generated cab locations
+void printsCabCoordinates( double cabX[ ], double cabY[ ] );	//prints coordinates of all cabs
+int computeShortestDistance( int xU, int yU, double xCabCoordinates[ ], double yCabCoordinates[ ] );	//figures out closest cab to user
+
+int main( )
+{
+	double xArray[MAX];		//cab x values
+	double yArray[MAX];		//cab y values
+	int x = getX( );		//accepts user's x coordinates
+	int y = getY( );		//accepts user's y coordinates
+	cout << "Your coordinates are: " << x << ", " << y << endl;		//reprints user's coordinates
+	initializeArrays( xArray, yArray );
+	printsCabCoordinates( xArray, yArray );
+	int ind = computeShortestDistance(x, y, xArray, yArray);	//cab index + 1
+	cout << "Cab " << ind << " is ready to pick you up.";
+	
+	cout << endl;
+	system( "pause" );
+	return 0;
+}
+
+/***************************************************************************************
+Method: getX
+Description: gets user's x location
+@param: none
+@return: integer x value
+***************************************************************************************/
+
+int getX( )
+{
+	int x;
+	cout << "Input X coordinate(0-100)";
+	cin >> x;
+
+	return x;
+}	//end getY
+
+/***************************************************************************************
+Method: getY
+Description: gets user's y location
+@param: none
+@return: integer y value
+***************************************************************************************/
+
+int getY( )
+{
+	int y;
+	cout << "Input Y coordinate(0-100)";
+	cin >> y;
+
+	return y;
+}	//end getY
+
+/***************************************************************************************
+Method: initializeArrays
+Description: initializes arrays of randomly generated cab locations
+@param: xArray, yArray
+@return: void
+***************************************************************************************/
+
+void initializeArrays( double xArray[MAX], double yArray[MAX])
+{
+	srand( time( 0 ) );
+
+	for ( int i = 0; i < MAX; i++ )
+	{
+		xArray[i] = rand( ) % (100 - 0 + 1) + 0;
+		yArray[i] = rand( ) % (100 - 0 + 1) + 0;
+	}
+}	//end initializeArrays
+
+/***************************************************************************************
+Method: printsCabCoordinates
+Description: prints out all cab locations
+@param: cabX - cab x locations array, cabY - cab y locations array
+@return: void
+***************************************************************************************/
+
+void printsCabCoordinates( double cabX[ ], double cabY[ ] )
+{
+	for ( int i = 0; i < MAX; i++ )
+	{
+		cout << "Here is Cab " << i + 1 << "'s coordinates: " << cabX[i] << ", " << cabY[i] << endl;
+	}
+}	//end printsCabCoordinates
+
+/***************************************************************************************
+Method: computeShortestDistance
+Description: calculates all cab distances from user's location, and chooses the shortest distance
+@param: xU - user x coordinate, yU - user y coordinate, xCabCoordinates - x cab location, yCabCoordinates - y cab location
+@return: integer index + 1 of cab closest to user
+***************************************************************************************/
+
+int computeShortestDistance( int xU, int yU, double xCabCoordinates[ ], double yCabCoordinates[ ] )
 {
 	int index = 0;
 	double shortestDistance;
-	double rise[20];
-	double run[20];
-	cout << "Your coordinates are: " << xU << ", " << yU << endl;
-	srand( time( 0 ) );
-	double distanceArray[20];
+	double rise[MAX];
+	double run[MAX];
+	double distanceArray[MAX];
+
 	for ( int i = 0; i < 20; i++ )
 	{
-		cout << "Here is Cab " << i + 1 << "'s coordinates: " << xCabCoordinates[i] << ", " << yCabCoordinates[i] << endl;
 		rise[i] = { yCabCoordinates[i] - yU };
 		rise[i] = pow( rise[i], 2 );
 		run[i] = { xCabCoordinates[i] - xU };
@@ -25,9 +126,7 @@ int setCoordinates(int xU, int yU, double xCabCoordinates[], double yCabCoordina
 		{
 			distanceArray[i] = distanceArray[i] * -1;
 		}
-		
-		cout << "This is Cab " << i + 1 <<"'s distance from you: " << distanceArray[i] << endl;
-		
+		cout << "This is Cab " << i + 1 << "'s distance from you: " << distanceArray[i] << endl;
 	}
 	shortestDistance = distanceArray[0];
 
@@ -39,7 +138,7 @@ int setCoordinates(int xU, int yU, double xCabCoordinates[], double yCabCoordina
 			shortestDistance = distanceArray[i];
 		}
 	}
-	for (int i = 0; i < 20; i++)
+	for ( int i = 0; i < 20; i++ )
 	{
 		if ( distanceArray[i] == shortestDistance )
 		{
@@ -48,32 +147,5 @@ int setCoordinates(int xU, int yU, double xCabCoordinates[], double yCabCoordina
 		}
 	}
 	cout << "The closest cab is " << shortestDistance << " away from you" << " at position " << xCabCoordinates[index] << ", " << yCabCoordinates[index] << endl;
-	return index;
-}
-
-
-int main( )
-{
-	int x, y;
-	cout << "Input X coordinate(0-100)";
-	cin >> x;
-	cout << "Input Y coordinate(0-100)";
-	cin >> y;
-	double rX, rY;
-	rX = rand( ) % (100 - 0 + 1) + 0;
-	rY = rand( ) % (100 - 0 + 1) + 0;
-	double xArray[20] =
-	{
-		100.0, 3.0, 91.0, 72.0, 8.0, 9.0, 10.0, 13.0, 29.0, 52.0, 67.0, 81.0, 19.0, 12.0, 43.0, 65.0, 18.0, 91.0, 80.0, rX
-	};
-	double yArray[20]
-	{
-		10.0, 5.0, 18.0, 63.0, 29.0, 23.0, 14.0, 86.0, 33.0, 39.0, 93.0, 10.0, 11.0, 62.0, 79.0, 73.0, 85.0, 32.0, 29.0, rY
-	};
-
-	int ind = setCoordinates(x, y, xArray, yArray);
-	cout << "Cab " << ind << " is ready to pick you up.";
-	cout << endl;
-	system( "pause" );
-	return 0;
-}
+	return index + 1;
+}	//end computeShortestDistance

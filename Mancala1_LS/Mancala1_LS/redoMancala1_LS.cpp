@@ -1,37 +1,53 @@
-/*
-Lyndon Saltz
-Mancala 1
-4/15/2020
-Description: Outputs line of stars based off of function parameters
-*/
+//data 5.5 5.0 7.2 9.0 10.5 0 11.0 13.5
 #include <iostream>
 using namespace std;
+double getMoneyAmount( );
+void convertToCoinsAndBills( double change, int& dollars, int& coin );
+void printChange( int dollars, int coin );
 
-void makeSolidLine( int stars ); //creates line of stars based off of star parameter
-/***************************************************************************************
-Method: makeSolidLine
-Description: Takes an integer and prints that amount of the character '*'
-@param: stars - number of characters
-@return: void
-***************************************************************************************/
 int main( )
 {
+	double change;
+	int dollars;
+	int coin;
 
-	makeSolidLine( 30 );
-	cout << endl;
-	makeSolidLine( 100 );
-	cout << endl;
-	makeSolidLine( 5 );
+	change = getMoneyAmount( );
+	convertToCoinsAndBills( change, dollars, coin );
+	printChange( dollars, coin );
+
 	cout << endl;
 	system( "pause" );
 	return 0;
 }
-
-void makeSolidLine( int stars )		
+double getMoneyAmount( )
 {
-	for ( int i = 0; i < stars; i++ )	//for loop creating line of stars
+	double cost;
+	double money;
+	double change;
+
+	cout << "How much does the item cost? ";
+	cin >> cost;
+	cout << "How much does the customer give you? ";
+	cin >> money;
+	while ( money < cost && money != 0 )
 	{
-		cout << "*";
-	}	//end makeSolidLine
+		cout << "ERROR not enough money\n";
+		cout << "Enter an amount bigger than " << cost << " or zero to quit" << endl;
+		cin >> money;
+	}
+	change = money - cost;
+	return change;
 }
-//problems: did not comment functions
+
+void convertToCoinsAndBills( double change, int& dollars, int& coin )
+{
+	dollars = (int)change;
+	coin = (change - dollars) * 100;
+	cout << coin << endl;
+}
+
+void printChange( int dollars, int coin )
+{
+	cout << "You get " << dollars << " dollar(s)";
+	cout << " and " << coin << " in coins";
+}
